@@ -3,142 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест личности | 16 Personalities Clone</title>
+    <title>Digital Type Test | Узнай свой потенциал</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #33a474;
-            --bg: #f6f7f9;
-            --text: #424242;
-            --white: #ffffff;
+            --primary: #6366f1; /* Дорогой индиго */
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
         }
-        body {
-            margin: 0; font-family: 'Open Sans', sans-serif;
-            background-color: var(--bg); color: var(--text);
-            display: flex; flex-direction: column; align-items: center;
-        }
-        header {
-            width: 100%; background: var(--white); padding: 20px;
-            text-align: center; border-bottom: 1px solid #e2e2e2;
-            font-weight: bold; color: var(--primary); font-size: 20px;
-        }
-        .container {
-            max-width: 800px; width: 90%; margin-top: 50px;
-            background: var(--white); padding: 40px;
-            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .progress-container {
-            width: 100%; height: 8px; background: #eee;
-            border-radius: 4px; margin-bottom: 40px;
-        }
-        #progress-bar {
-            width: 0%; height: 100%; background: var(--primary);
-            border-radius: 4px; transition: 0.5s;
-        }
-        .question-text {
-            font-size: 24px; font-weight: 700; text-align: center;
-            margin-bottom: 40px; min-height: 60px;
-        }
-        .options {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 30px; position: relative;
-        }
-        /* Стиль кружочков как в оригинале */
-        .option-dot {
-            cursor: pointer; border-radius: 50%; border: 2px solid #ccc;
-            transition: 0.3s; background: white;
-        }
-        .dot-agree { border-color: var(--primary); width: 50px; height: 50px; }
-        .dot-agree:hover { background: var(--primary); }
-        .dot-disagree { border-color: #88619a; width: 50px; height: 50px; }
-        .dot-disagree:hover { background: #88619a; }
-        .dot-neutral { border-color: #ccc; width: 35px; height: 35px; }
 
-        .labels { display: flex; justify-content: space-between; width: 100%; font-weight: bold; margin-bottom: 10px; }
-        .agree { color: var(--primary); }
-        .disagree { color: #88619a; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0; font-family: 'Inter', sans-serif;
+            background-color: var(--bg); color: var(--text);
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center; padding: 100px 20px;
+            max-width: 800px; animation: fadeIn 1s ease;
+        }
+        h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; background: linear-gradient(90deg, #818cf8, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { font-size: 1.2rem; color: #94a3b8; margin-bottom: 40px; }
+
+        /* Quiz Container */
+        .container {
+            width: 90%; max-width: 600px; background: var(--card-bg);
+            padding: 40px; border-radius: 24px; border: 1px solid #334155;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); margin-bottom: 50px;
+        }
+
+        .progress-bar { height: 6px; background: #334155; border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
+        .progress-inner { height: 100%; background: var(--primary); width: 0%; }
+
+        .question-text { font-size: 1.5rem; font-weight: 600; margin-bottom: 30px; line-height: 1.4; }
+
+        /* Кнопки ответов */
+        .option {
+            display: block; width: 100%; padding: 16px 24px; margin-bottom: 12px;
+            background: #334155; border: 1px solid transparent; border-radius: 12px;
+            color: white; cursor: pointer; text-align: left; font-size: 1rem;
+        }
+        .option:hover { background: #475569; border-color: var(--primary); transform: translateX(5px); }
+
+        .btn-start {
+            padding: 16px 40px; font-size: 1.1rem; font-weight: 600;
+            background: var(--primary); color: white; border: none;
+            border-radius: 12px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .btn-start:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
 
         .hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Результат */
         .result-card { text-align: center; }
-        .result-name { font-size: 32px; color: var(--primary); margin: 20px 0; }
+        .type-title { font-size: 2rem; color: #fbbf24; margin: 20px 0; font-weight: 800; }
+        .desc { color: #94a3b8; line-height: 1.6; margin-bottom: 30px; }
     </style>
 </head>
 <body>
 
-<header>PERSONALITY_TEST v1.0</header>
-
-<div class="container" id="quiz-container">
-    <div class="progress-container">
-        <div id="progress-bar"></div>
+    <div class="hero" id="hero">
+        <h1>Твой код личности в Digital</h1>
+        <p class="subtitle">Пройди тест и узнай, какая роль в онлайн-бизнесе принесет тебе максимум профита и удовольствия.</p>
+        <button class="btn-start" onclick="startQuiz()">Начать анализ</button>
     </div>
 
-    <div class="labels">
-        <span class="agree">СОГЛАСЕН</span>
-        <span class="disagree">НЕ СОГЛАСЕН</span>
-    </div>
+    <div class="container hidden" id="quiz-container">
+        <div class="progress-bar"><div class="progress-inner" id="progress"></div></div>
+        <div id="quiz">
+            <div class="question-text" id="q-text">Вопрос?</div>
+            <div id="options-container"></div>
+        </div>
 
-    <div id="quiz">
-        <div class="question-text" id="q-text">Загрузка вопроса...</div>
-        <div class="options">
-            <div class="option-dot dot-agree" onclick="handleAnswer(3)"></div>
-            <div class="option-dot dot-agree" style="width:40px; height:40px;" onclick="handleAnswer(2)"></div>
-            <div class="option-dot dot-neutral" onclick="handleAnswer(0)"></div>
-            <div class="option-dot dot-disagree" style="width:40px; height:40px;" onclick="handleAnswer(-2)"></div>
-            <div class="option-dot dot-disagree" onclick="handleAnswer(-3)"></div>
+        <div id="result" class="hidden result-card">
+            <h2>Твой результат:</h2>
+            <div class="type-title" id="type-name">Загрузка...</div>
+            <p class="desc" id="type-desc"></p>
+            <button class="btn-start" onclick="location.href='tg://resolve?domain=NuIIReference'">Обсудить сотрудничество</button>
         </div>
     </div>
 
-    <div id="result" class="hidden result-card">
-        <h2>Ваш тип личности:</h2>
-        <div class="result-name" id="res-name">Аналитик</div>
-        <p id="res-desc">Вы обладаете острым умом и любите решать сложные задачи.</p>
-        <button onclick="location.reload()" style="padding: 10px 20px; cursor:pointer;">Пройти еще раз</button>
-    </div>
-</div>
-
 <script>
     const questions = [
-        "Вы часто погружаетесь в свои мысли, забывая об окружающем мире.",
-        "Для вас логика важнее, чем чувства других людей.",
-        "Вы предпочитаете планировать всё до мельчайших деталей.",
-        "Вам легко заводить новые знакомства в большой компании."
+        { q: "Как ты подходишь к новой задаче?", a: [
+            {t: "Сначала строю четкий план и структуру", r: "A"},
+            {t: "Сразу приступаю к делу, разбираюсь в процессе", r: "B"}
+        ]},
+        { q: "В работе для тебя важнее всего...", a: [
+            {t: "Идеально работающий код и логика", r: "A"},
+            {t: "Высокая прибыль и показатели конверсии", r: "B"}
+        ]},
+        { q: "Как ты относишься к неопределенности?", a: [
+            {t: "Она меня напрягает, я люблю порядок", r: "A"},
+            {t: "Это новые возможности для тестов и роста", r: "B"}
+        ]},
+        { q: "Твой идеальный рабочий день — это...", a: [
+            {t: "Глубокая работа над одним сложным проектом", r: "A"},
+            {t: "Много разных задач, тестов и общения", r: "B"}
+        ]}
     ];
 
-    let currentIdx = 0;
-    let totalScore = 0;
+    let current = 0;
+    let score = { A: 0, B: 0 };
 
-    function updateView() {
-        document.getElementById('q-text').innerText = questions[currentIdx];
-        const progress = ((currentIdx) / questions.length) * 100;
-        document.getElementById('progress-bar').style.width = progress + '%';
+    function startQuiz() {
+        document.getElementById('hero').classList.add('hidden');
+        document.getElementById('quiz-container').classList.remove('hidden');
+        showQ();
     }
 
-    function handleAnswer(val) {
-        totalScore += val;
-        currentIdx++;
+    function showQ() {
+        const q = questions[current];
+        document.getElementById('q-text').innerText = q.q;
+        const optCont = document.getElementById('options-container');
+        optCont.innerHTML = '';
+        
+        q.a.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            btn.innerText = opt.t;
+            btn.onclick = () => handle(opt.r);
+            optCont.appendChild(btn);
+        });
 
-        if (currentIdx < questions.length) {
-            updateView();
-        } else {
-            showResult();
-        }
+        document.getElementById('progress').style.width = (current / questions.length) * 100 + '%';
+    }
+
+    function handle(r) {
+        score[r]++;
+        current++;
+        if (current < questions.length) showQ();
+        else showResult();
     }
 
     function showResult() {
         document.getElementById('quiz').classList.add('hidden');
-        document.getElementById('progress-bar').style.width = '100%';
         document.getElementById('result').classList.remove('hidden');
-        
-        if (totalScore > 0) {
-            document.getElementById('res-name').innerText = "ИНТЕЛЛЕКТУАЛ (INTJ)";
-            document.getElementById('res-desc').innerText = "Вы независимы, уверены в себе и мыслите стратегически.";
+        document.getElementById('progress').style.width = '100%';
+
+        const name = document.getElementById('type-name');
+        const desc = document.getElementById('type-desc');
+
+        if (score.A > score.B) {
+            name.innerText = "Архитектор Систем";
+            desc.innerText = "Ты — человек-структура. Твой мозг заточен под создание сложных автоворонок и автоматизацию. В онлайн-школе ты незаменим как технический мозг.";
         } else {
-            document.getElementById('res-name').innerText = "АКТИВИСТ (ENFJ)";
-            document.getElementById('res-desc').innerText = "Вы харизматичны и умеете вдохновлять людей вокруг себя.";
+            name.innerText = "Growth Hacker";
+            desc.innerText = "Ты ориентирован на результат и быстрый рост. Ты видишь возможности там, где другие видят тупик. Идеален для работы с холодным трафиком и масштабированием.";
         }
     }
-
-    updateView();
 </script>
-
 </body>
 </html>
