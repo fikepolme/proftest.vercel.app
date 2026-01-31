@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест личности | 16 Personalities Clone</title>
+    <style>
+        :root {
+            --primary: #33a474;
+            --bg: #f6f7f9;
+            --text: #424242;
+            --white: #ffffff;
+        }
+        body {
+            margin: 0; font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg); color: var(--text);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        header {
+            width: 100%; background: var(--white); padding: 20px;
+            text-align: center; border-bottom: 1px solid #e2e2e2;
+            font-weight: bold; color: var(--primary); font-size: 20px;
+        }
+        .container {
+            max-width: 800px; width: 90%; margin-top: 50px;
+            background: var(--white); padding: 40px;
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .progress-container {
+            width: 100%; height: 8px; background: #eee;
+            border-radius: 4px; margin-bottom: 40px;
+        }
+        #progress-bar {
+            width: 0%; height: 100%; background: var(--primary);
+            border-radius: 4px; transition: 0.5s;
+        }
+        .question-text {
+            font-size: 24px; font-weight: 700; text-align: center;
+            margin-bottom: 40px; min-height: 60px;
+        }
+        .options {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; position: relative;
+        }
+        /* Стиль кружочков как в оригинале */
+        .option-dot {
+            cursor: pointer; border-radius: 50%; border: 2px solid #ccc;
+            transition: 0.3s; background: white;
+        }
+        .dot-agree { border-color: var(--primary); width: 50px; height: 50px; }
+        .dot-agree:hover { background: var(--primary); }
+        .dot-disagree { border-color: #88619a; width: 50px; height: 50px; }
+        .dot-disagree:hover { background: #88619a; }
+        .dot-neutral { border-color: #ccc; width: 35px; height: 35px; }
+
+        .labels { display: flex; justify-content: space-between; width: 100%; font-weight: bold; margin-bottom: 10px; }
+        .agree { color: var(--primary); }
+        .disagree { color: #88619a; }
+
+        .hidden { display: none; }
+        .result-card { text-align: center; }
+        .result-name { font-size: 32px; color: var(--primary); margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<header>PERSONALITY_TEST v1.0</header>
+
+<div class="container" id="quiz-container">
+    <div class="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <div class="labels">
+        <span class="agree">СОГЛАСЕН</span>
+        <span class="disagree">НЕ СОГЛАСЕН</span>
+    </div>
+
+    <div id="quiz">
+        <div class="question-text" id="q-text">Загрузка вопроса...</div>
+        <div class="options">
+            <div class="option-dot dot-agree" onclick="handleAnswer(3)"></div>
+            <div class="option-dot dot-agree" style="width:40px; height:40px;" onclick="handleAnswer(2)"></div>
+            <div class="option-dot dot-neutral" onclick="handleAnswer(0)"></div>
+            <div class="option-dot dot-disagree" style="width:40px; height:40px;" onclick="handleAnswer(-2)"></div>
+            <div class="option-dot dot-disagree" onclick="handleAnswer(-3)"></div>
+        </div>
+    </div>
+
+    <div id="result" class="hidden result-card">
+        <h2>Ваш тип личности:</h2>
+        <div class="result-name" id="res-name">Аналитик</div>
+        <p id="res-desc">Вы обладаете острым умом и любите решать сложные задачи.</p>
+        <button onclick="location.reload()" style="padding: 10px 20px; cursor:pointer;">Пройти еще раз</button>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        "Вы часто погружаетесь в свои мысли, забывая об окружающем мире.",
+        "Для вас логика важнее, чем чувства других людей.",
+        "Вы предпочитаете планировать всё до мельчайших деталей.",
+        "Вам легко заводить новые знакомства в большой компании."
+    ];
+
+    let currentIdx = 0;
+    let totalScore = 0;
+
+    function updateView() {
+        document.getElementById('q-text').innerText = questions[currentIdx];
+        const progress = ((currentIdx) / questions.length) * 100;
+        document.getElementById('progress-bar').style.width = progress + '%';
+    }
+
+    function handleAnswer(val) {
+        totalScore += val;
+        currentIdx++;
+
+        if (currentIdx < questions.length) {
+            updateView();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz').classList.add('hidden');
+        document.getElementById('progress-bar').style.width = '100%';
+        document.getElementById('result').classList.remove('hidden');
+        
+        if (totalScore > 0) {
+            document.getElementById('res-name').innerText = "ИНТЕЛЛЕКТУАЛ (INTJ)";
+            document.getElementById('res-desc').innerText = "Вы независимы, уверены в себе и мыслите стратегически.";
+        } else {
+            document.getElementById('res-name').innerText = "АКТИВИСТ (ENFJ)";
+            document.getElementById('res-desc').innerText = "Вы харизматичны и умеете вдохновлять людей вокруг себя.";
+        }
+    }
+
+    updateView();
+</script>
+
+</body>
+</html>
